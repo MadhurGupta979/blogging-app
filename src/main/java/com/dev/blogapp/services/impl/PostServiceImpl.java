@@ -61,7 +61,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto updatePost(PostDto postDto, Integer postId) {
-        Post post = this.postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundException("post", "post id", postId));
+        Post post = this.postRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundException("post", "post id", postId));
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         post.setImageName(postDto.getImageName());
@@ -111,8 +111,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> searchPosts(String keyword) {
-        return null;
+    public List<PostDto> searchPosts(String keyword) {
+        List<Post> posts = this.postRepo.findByTitleContaining(keyword);
+        List<PostDto> postDtos = posts.stream().map(post -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+
+        for (int i = 0; i < posts.size(); i++) {
+            postDtos.get(i).setCategoryDto(this.modelMapper.map(posts.get(i).getCategory(), CategoryDto.class));
+            postDtos.get(i).setUserDto(this.modelMapper.map(posts.get(i).getUser(), UserDto.class));
+        }
+
+        return postDtos;
     }
 
     @Override
