@@ -1,9 +1,6 @@
 package com.dev.blogapp.payloads;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CollectionId;
 
 import javax.persistence.Column;
@@ -12,6 +9,7 @@ import javax.persistence.Column;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CategoryDto {
     private int id;
 
